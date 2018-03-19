@@ -1,0 +1,50 @@
+<div id="goragora">
+  <div class = "menurow">
+    <div id ="user_status">
+        <ul>
+            <% if user_signed_in? %>
+              <ul><%= link_to 'Sign out', destroy_user_session_path, method: 'delete' %></ul>
+            <% else %>
+              <ul><%= link_to 'Sign in', user_session_path, method: 'post' %></ul>
+              <ul><%= link_to 'Sign up', new_user_registration_path, method: 'get' %></ul>
+            <% end %>
+    </div>
+  </div>
+    <div class="d-flex justify-content-center">
+      <div class="card">
+        <div class="card-body">
+          <div id="여기에출력"></div>
+            <div id="sum"></div>
+
+            <%= form_with(url: search_sum_path, method: :put, remote: true) do |form| %>
+            <div class="row">
+              <div class="col-6">
+                <label for="zone">어디서 드시고 싶으신가요?</label>
+                  <select name="zone_id" id="zone_id">
+                    <option value=" ">상관없어요</option>
+                    <% current_user.zones.each do |zone| %>
+                      <option value="<%= zone.id %>"><%= zone.name %></option>
+                    <% end %>
+                  </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                <label for="category">어떤 종류가 좋으세요?</label>
+                <select name="category" id="category">
+                  <option value=" ">상관없어요</option>
+                  <% current_user.menus.group(:category).pluck(:category).each do | category | %>
+                    <option><%= category %></option>
+                  <% end %>
+                </select>
+              </div>
+              <div class="actions">
+                <%= form.submit "눌러주세요", class: 'btn btn-primary btn-sm', id: 'btn-sm' %>
+              </div>
+                <% end %>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
